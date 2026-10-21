@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+/*
+ * Doodles R Us — Design System
+ *
+ * Centralized design tokens for consistent styling.
+ * Tailwind CSS v4 exposes these as utility classes.
+ */
+
+@theme {
+    /* Brand colours */
+    --color-cream: #FFF9F2;
+    --color-honey: #F3BE69;
+    --color-peach: #F5D5CA;
+    --color-sage: #BDD4BA;
+    --color-teal: #176B68;
+
+    /* Text colours */
+    --color-ink: #29353A;
+    --color-muted: #52615D;
+
+    /* Font families */
+    --font-heading: "Nunito", sans-serif;
+    --font-body: "Nunito", sans-serif;
+}
+
+/* Global defaults */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+    outline: 3px solid var(--color-teal);
+    outline-offset: 3px;
+}
