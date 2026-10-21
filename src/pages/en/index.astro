@@ -1,5 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import HomePage from "../../components/home/HomePage.astro";
+
+/**
+    * English homepage route.
+    *
+    * Reuses the same layout and homepage components
+    * as the French version, with translated content.
+    */
 ---
 
 <BaseLayout
@@ -7,21 +15,5 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         description="Discover Doodles R Us, a family Goldendoodle breeder in Saint-Colomban, Québec."
         lang="en"
 >
-    <main class="flex min-h-screen items-center justify-center px-6">
-        <section class="max-w-2xl text-center">
-            <p class="mb-4 font-semibold text-teal">
-                🐾 Saint-Colomban, Québec
-            </p>
-
-            <h1 class="text-5xl font-extrabold text-ink">
-                Welcome to
-                <span class="text-teal">Doodles R Us!</span>
-            </h1>
-
-            <p class="mt-6 text-lg text-muted">
-                A family Goldendoodle breeder where little paws
-                bring big happiness.
-            </p>
-        </section>
-    </main>
+    <HomePage lang="en" />
 </BaseLayout>
