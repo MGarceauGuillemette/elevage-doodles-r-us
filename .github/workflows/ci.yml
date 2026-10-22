@@ -1,0 +1,52 @@
+# Doodles R Us — Continuous Integration
+#
+# Runs the quality checks for code changes and CMS edits.
+# No deployment occurs in this workflow.
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+# Automated checks need read-only repository access.
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Tests and production build
+    runs-on: ubuntu-latest
+
+    steps:
+      # Download the repository at the tested commit.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Match the Node.js version used for development.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # Use the committed lockfile for reproducible builds.
+      - name: Install dependencies
+        run: npm ci
+
+      # Verify Astro component and TypeScript diagnostics.
+      - name: Check types and components
+        run: npm run check
+
+      # Run the unit tests without watch mode.
+      - name: Run unit tests
+        run: npm run test
+
+      # Validate CMS content and generate the static site.
+      - name: Build production website
+        run: npm run build

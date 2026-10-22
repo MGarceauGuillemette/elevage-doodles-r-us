@@ -1,6 +1,6 @@
 ---
 import puppyData from "../../data/puppies.json";
-import type { Puppy } from "../../types/puppy";
+import { validatePuppies } from "../../lib/validation/puppySchema";
 import type { SiteLanguage } from "../../i18n/home";
 
 import PuppyCard from "../ui/PuppyCard.astro";
@@ -18,8 +18,13 @@ interface Props {
 
 const { lang } = Astro.props;
 
-// Keep our data constrained by the shared Puppy interface.
-const puppies: Puppy[] = puppyData;
+/**
+ * Validate the CMS-managed data during site generation.
+ *
+ * An invalid record stops the build instead of allowing
+ * incomplete or malformed content into the public site.
+ */
+const puppies = validatePuppies(puppyData);
 
 const labels = {
     fr: {
