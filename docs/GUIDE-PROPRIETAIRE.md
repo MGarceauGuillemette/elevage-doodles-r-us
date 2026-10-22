@@ -38,6 +38,34 @@ Ce guide explique comment gérer les informations sur les chiots sans modifier l
 
 Utiliser des photos nettes, bien éclairées et dont la publication est autorisée.
 
+## Modifier les coordonnées
+
+1. Ouvrir Pages CMS et sélectionner Doodles R Us.
+2. Choisir **Coordonnées**.
+3. Modifier l'adresse courriel, le numéro de téléphone ou le lien Facebook.
+4. Laisser un champ vide si ce moyen de communication n'est pas offert.
+5. Enregistrer les modifications.
+
+**Important :** Utiliser uniquement les coordonnées officielles de l'élevage.
+
+## Modifier la présentation de l'élevage
+
+1. Dans Pages CMS, ouvrir **À propos de l'élevage**.
+2. Modifier la présentation et l'histoire dans la section **Version française**.
+3. Mettre à jour les textes correspondants dans **English version**.
+4. Relire les deux versions avant d'enregistrer.
+5. Enregistrer les modifications.
+
+Les modifications seront prises en compte lors du prochain déploiement réussi du site.
+
+## Bonnes pratiques
+
+- Vérifier les renseignements avant leur publication.
+- Éviter de partager une adresse résidentielle privée.
+- Ne pas publier de renseignements personnels sur les familles adoptantes.
+- Utiliser seulement des photos et des textes dont la publication est autorisée.
+- Contacter le responsable technique si une modification provoque une erreur.
+
 ## Retirer une annonce
 
 Avant de supprimer une fiche, vérifier que les informations ne sont plus nécessaires. Si le chiot a rejoint sa famille, il est possible de modifier son statut à **Adopté**.
