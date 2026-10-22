@@ -1,3 +1,11 @@
+/*
+ * Nunito is bundled with the website rather than loaded
+ * from a third-party CDN.
+ *
+ * This improves reliability and avoids external font
+ * requests when visitors open the website.
+ */
+@import "@fontsource-variable/nunito";
 @import "tailwindcss";
 
 /*
@@ -8,20 +16,25 @@
  */
 
 @theme {
-    /* Brand colours */
+    /*
+     * Brand colours already established in Milestone 2.
+     * Keep any existing tokens when updating this block.
+     */
     --color-cream: #FFF9F2;
     --color-honey: #F3BE69;
     --color-peach: #F5D5CA;
     --color-sage: #BDD4BA;
     --color-teal: #176B68;
 
-    /* Text colours */
     --color-ink: #29353A;
     --color-muted: #52615D;
 
-    /* Font families */
-    --font-heading: "Nunito", sans-serif;
-    --font-body: "Nunito", sans-serif;
+    /*
+     * The variable font supports multiple weights without
+     * downloading a separate file for every weight.
+     */
+    --font-heading: "Nunito Variable", sans-serif;
+    --font-body: "Nunito Variable", sans-serif;
 }
 
 /* Global defaults */

@@ -1,0 +1,78 @@
+---
+import { heroImage } from "../../data/siteMedia";
+import type { SiteLanguage } from "../../i18n/home";
+
+/**
+ * Hero image for the bilingual homepage.
+ *
+ * Displays an approved breeder photograph when available.
+ * Otherwise, renders a decorative placeholder.
+ *
+ * The container maintains a consistent aspect ratio
+ * to minimize layout shifts across screen sizes.
+ */
+interface Props {
+    lang: SiteLanguage;
+}
+
+const { lang } = Astro.props;
+
+const placeholderText = {
+    fr: "Nos Goldendoodles en images, bientôt!",
+    en: "Photos of our Goldendoodles coming soon!",
+};
+
+const hasImage = Boolean(heroImage.src);
+---
+
+<div class="relative mx-auto w-full max-w-xl">
+    <!-- Decorative background accent -->
+    <div
+            class="absolute -top-4 -right-3 h-24 w-24
+           rounded-full bg-honey sm:h-32 sm:w-32"
+            aria-hidden="true"
+    ></div>
+
+    <div
+            class="relative aspect-[4/5] overflow-hidden
+           rounded-[2.5rem] bg-peach shadow-xl
+           sm:rounded-[3rem]"
+    >
+        {
+            hasImage && heroImage.src ? (
+                    <img
+                            src={heroImage.src}
+                            alt={heroImage.alt[lang]}
+                            width="800"
+                            height="1000"
+                            fetchpriority="high"
+                            decoding="async"
+                            class="h-full w-full object-cover"
+                    />
+            ) : (
+                    <div
+                            class="flex h-full flex-col items-center
+                 justify-center gap-5 p-8 text-center"
+                    >
+          <span
+                  class="text-8xl sm:text-9xl"
+                  aria-hidden="true"
+          >
+            🐶
+          </span>
+
+                        <p class="max-w-xs text-lg font-bold text-ink">
+                            {placeholderText[lang]}
+                        </p>
+                    </div>
+            )
+        }
+    </div>
+
+    <!-- Small decorative accent below the photograph -->
+    <div
+            class="absolute -bottom-4 -left-3 h-20 w-20
+           rounded-full bg-sage sm:h-28 sm:w-28"
+            aria-hidden="true"
+    ></div>
+</div>

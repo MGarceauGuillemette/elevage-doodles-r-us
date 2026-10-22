@@ -1,0 +1,62 @@
+---
+/**
+    * Shared button-styled link component.
+    *
+    * This component is specifically for navigation actions.
+    * Since the website currently uses links rather than
+    * form submissions, it renders a semantic <a> element.
+    *
+    * Variants define visual emphasis while keeping sizing,
+    * focus states, and transitions consistent.
+    */
+
+type ButtonVariant = "primary" | "secondary";
+
+interface Props {
+    href: string;
+    variant?: ButtonVariant;
+    external?: boolean;
+    class?: string;
+}
+
+const {
+    href,
+    variant = "primary",
+    external = false,
+    class: customClass = "",
+} = Astro.props;
+
+/**
+ * Static Tailwind class strings are used rather than
+ * dynamically constructed class names, so Tailwind
+ * can identify and generate all required styles.
+ */
+const baseClasses = [
+    "inline-flex min-h-12 items-center justify-center",
+    "rounded-full px-7 py-3 text-center font-bold",
+    "transition-colors duration-200",
+    "focus-visible:outline-3 focus-visible:outline-offset-3",
+    "focus-visible:outline-teal",
+].join(" ");
+
+const variants: Record<ButtonVariant, string> = {
+    primary:
+        "bg-teal text-white hover:bg-ink",
+
+    secondary:
+        "border-2 border-teal text-teal hover:bg-sage",
+};
+---
+
+<a
+        href={href}
+        class:list={[
+            baseClasses,
+            variants[variant],
+            customClass,
+        ]}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+>
+    <slot />
+</a>
