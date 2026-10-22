@@ -50,3 +50,28 @@ jobs:
       # Validate CMS content and generate the static site.
       - name: Build production website
         run: npm run build
+
+      # Download the browser engines needed by Playwright.
+      #
+      # --with-deps installs the required Linux system
+      # packages in addition to the browser executables.
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox
+
+      # Run end-to-end tests against the production build.
+      # Playwright automatically starts Astro's preview server.
+      - name: Run browser tests
+        run: npm run test:e2e
+
+      # Preserve screenshots, traces, and reports when
+      # tests fail so problems can be diagnosed afterward.
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+          if-no-files-found: ignore
