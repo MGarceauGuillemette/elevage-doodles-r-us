@@ -1,0 +1,110 @@
+---
+import type {
+    Puppy,
+    PuppyStatus,
+} from "../../types/puppy";
+
+import type { SiteLanguage } from "../../i18n/home";
+
+/**
+ * Reusable card for displaying a single puppy.
+ *
+ * The card receives typed data rather than reading from
+ * a file directly. This separation makes the component
+ * reusable and easier to test.
+ */
+interface Props {
+    puppy: Puppy;
+    lang: SiteLanguage;
+}
+
+const { puppy, lang } = Astro.props;
+
+/**
+ * Localized labels for each availability status.
+ *
+ * The status itself remains language-independent.
+ */
+const statusLabels: Record<
+    SiteLanguage,
+    Record<PuppyStatus, string>
+> = {
+    fr: {
+        available: "Disponible",
+        reserved: "Réservé",
+        adopted: "Adopté",
+    },
+    en: {
+        available: "Available",
+        reserved: "Reserved",
+        adopted: "Adopted",
+    },
+};
+
+/**
+ * Status-specific styles are explicitly mapped so that
+ * Tailwind can detect and generate these utility classes.
+ */
+const statusStyles: Record<PuppyStatus, string> = {
+    available: "bg-sage text-ink",
+    reserved: "bg-honey text-ink",
+    adopted: "bg-peach text-ink",
+};
+
+const imageFallback =
+    lang === "fr" ? "Photo à venir" : "Photo coming soon";
+---
+
+<article
+        class="overflow-hidden rounded-3xl border border-ink/10
+         bg-white shadow-sm transition-shadow hover:shadow-md"
+>
+    <!--
+      Only display actual photographs supplied by the breeder.
+      A styled fallback is used when a photograph is unavailable.
+    -->
+    <div
+            class="flex aspect-[4/3] items-center justify-center
+           overflow-hidden bg-peach"
+    >
+        {
+            puppy.image ? (
+                    <img
+                            src={puppy.image}
+                            alt={puppy.imageAlt?.[lang] || puppy.name}
+                            class="h-full w-full object-cover"
+                            loading="lazy"
+                            decoding="async"
+                    />
+            ) : (
+                    <div class="text-center">
+          <span class="block text-6xl" aria-hidden="true">
+            🐾
+          </span>
+                        <p class="mt-3 font-semibold text-ink">
+                            {imageFallback}
+                        </p>
+                    </div>
+            )
+        }
+    </div>
+
+    <div class="p-6">
+    <span
+            class:list={[
+                "inline-block rounded-full px-4 py-1.5 text-sm font-bold",
+                statusStyles[puppy.status],
+            ]}
+    >
+      {statusLabels[lang][puppy.status]}
+    </span>
+
+        <h3 class="mt-4 font-heading text-2xl font-extrabold text-ink">
+            {puppy.name}
+        </h3>
+
+        <p class="mt-3 leading-relaxed text-muted">
+            {puppy.description[lang]}
+        </p>
+    </div>
+</article>

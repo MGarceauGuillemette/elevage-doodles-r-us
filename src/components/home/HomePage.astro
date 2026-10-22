@@ -3,6 +3,7 @@ import {
     homeContent,
     type SiteLanguage,
 } from "../../i18n/home";
+import PuppyPreview from "./PuppyPreview.astro"
 
 /**
  * Shared, responsive homepage.
@@ -140,48 +141,11 @@ const t = homeContent[lang];
     </section>
 
     <!-- PUPPIES: Placeholder until real availability data is added. -->
-    <section
-            id="chiots"
-            aria-labelledby="puppies-heading"
-            class="px-6 py-20"
-    >
-        <div class="mx-auto max-w-7xl">
-            <div class="text-center">
-                <p class="font-bold text-teal">
-                    {t.puppies.eyebrow}
-                </p>
-
-                <h2
-                        id="puppies-heading"
-                        class="mt-4 font-heading text-4xl
-                 font-extrabold text-ink sm:text-5xl"
-                >
-                    {t.puppies.title}
-                </h2>
-
-                <p
-                        class="mx-auto mt-6 max-w-2xl text-lg
-                 leading-relaxed text-muted"
-                >
-                    {t.puppies.description}
-                </p>
-            </div>
-
-            <div
-                    class="mx-auto mt-12 flex max-w-xl flex-col
-               items-center rounded-3xl bg-sage p-10
-               text-center"
-            >
-        <span class="text-6xl" aria-hidden="true">
-          🐾
-        </span>
-
-                <p class="mt-5 text-xl font-bold text-ink">
-                    {t.puppies.notice}
-                </p>
-            </div>
-        </div>
-    </section>
+    <!--
+        Reusable puppy availability section.
+        Puppy records will eventually be managed through Pages CMS.
+    -->
+    <PuppyPreview lang={lang} />
 
     <!-- CONTACT: Real contact channels will be added later. -->
     <section
