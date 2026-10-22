@@ -1,6 +1,9 @@
-
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
+import {
+    getPageFromPath,
+    getPageUrl,
+    type PageId,
+} from "../../lib/routes";
 import type { SiteLanguage } from "../../i18n/home";
 
 /**
@@ -45,22 +48,49 @@ const labels = {
 
 const t = labels[lang];
 
-const homeUrl = getRelativeLocaleUrl(lang, "");
-
 /**
- * Anchor links include the homepage path so navigation
- * will continue working from future secondary pages.
+ * Navigation configuration shared by desktop and mobile.
+ *
+ * Links now target dedicated pages instead of homepage
+ * section anchors.
  */
-const navigation = [
-    { label: t.home, href: homeUrl },
-    { label: t.about, href: `${homeUrl}#a-propos` },
-    { label: t.puppies, href: `${homeUrl}#chiots` },
+const navigation: {
+    id: PageId;
+    label: string;
+    href: string;
+}[] = [
+    {
+        id: "home",
+        label: t.home,
+        href: getPageUrl("home", lang),
+    },
+    {
+        id: "about",
+        label: t.about,
+        href: getPageUrl("about", lang),
+    },
+    {
+        id: "puppies",
+        label: t.puppies,
+        href: getPageUrl("puppies", lang),
+    },
 ];
 
-const contactUrl = `${homeUrl}#contact`;
+const homeUrl = getPageUrl("home", lang);
+const contactUrl = getPageUrl("contact", lang);
+
+/**
+ * Identify the current semantic page so that switching
+ * languages preserves the corresponding destination.
+ */
+const currentPage = getPageFromPath(Astro.url.pathname);
 
 const otherLanguage = lang === "fr" ? "en" : "fr";
-const languageUrl = getRelativeLocaleUrl(otherLanguage, "");
+
+const languageUrl = getPageUrl(
+    currentPage ?? "home",
+    otherLanguage,
+);
 ---
 
 <header

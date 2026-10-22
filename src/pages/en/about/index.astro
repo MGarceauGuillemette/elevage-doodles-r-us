@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageIntro from "../../../components/ui/PageIntro.astro";
+import { pagesContent } from "../../../i18n/pages";
+
+/**
+ * English About page.
+ *
+ * Shares the design of the French About page
+ * while displaying localized content.
+ */
+const content = pagesContent.en.about;
+---
+
+<BaseLayout
+        title={content.title}
+        description={content.description}
+        lang="en"
+>
+    <main id="main-content">
+        <PageIntro
+                eyebrow={content.eyebrow}
+                heading={content.heading}
+                paragraphs={content.paragraphs}
+        />
+    </main>
+</BaseLayout>

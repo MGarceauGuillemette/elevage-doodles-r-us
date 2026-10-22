@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageIntro from "../../../components/ui/PageIntro.astro";
+import ContactSection from "../../../components/home/ContactSection.astro";
+import { pagesContent } from "../../../i18n/pages";
+
+/**
+ * French contact page.
+ *
+ * Reuses the public contact component and its
+ * centralized business information.
+ */
+const content = pagesContent.fr.contact;
+---
+
+<BaseLayout
+        title={content.title}
+        description={content.description}
+        lang="fr"
+>
+    <main id="main-content">
+        <PageIntro
+                eyebrow={content.eyebrow}
+                heading={content.heading}
+                paragraphs={content.paragraphs}
+        />
+
+        <ContactSection lang="fr" />
+    </main>
+</BaseLayout>

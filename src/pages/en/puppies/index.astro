@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageIntro from "../../../components/ui/PageIntro.astro";
+import PuppyPreview from "../../../components/home/PuppyPreview.astro";
+import { pagesContent } from "../../../i18n/pages";
+
+/**
+ * English puppy availability page.
+ *
+ * Both languages share the same validated data and
+ * presentation component.
+ */
+const content = pagesContent.en.puppies;
+---
+
+<BaseLayout
+        title={content.title}
+        description={content.description}
+        lang="en"
+>
+    <main id="main-content">
+        <PageIntro
+                eyebrow={content.eyebrow}
+                heading={content.heading}
+                paragraphs={content.paragraphs}
+        />
+
+        <PuppyPreview lang="en" />
+    </main>
+</BaseLayout>

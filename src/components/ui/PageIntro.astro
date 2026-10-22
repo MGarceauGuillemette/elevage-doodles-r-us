@@ -1,0 +1,62 @@
+---
+/**
+    * Shared introduction for secondary pages.
+    *
+    * Displays a consistent eyebrow, page heading,
+    * and optional introductory paragraphs.
+    *
+    * The component receives already-localized content
+    * and does not need to know the active language.
+    */
+interface Props {
+    eyebrow: string;
+    heading: string;
+    paragraphs?: string[];
+}
+
+const {
+    eyebrow,
+    heading,
+    paragraphs = [],
+} = Astro.props;
+---
+
+<section
+        class="relative overflow-hidden bg-cream
+         px-6 py-16 sm:py-20"
+>
+    <!-- Decorative accent without semantic meaning. -->
+    <div
+            class="pointer-events-none absolute -top-16 right-0
+           h-48 w-48 rounded-full bg-honey/30 blur-3xl"
+            aria-hidden="true"
+    ></div>
+
+    <div class="relative mx-auto max-w-4xl text-center">
+        <p
+                class="inline-flex rounded-full bg-sage
+             px-5 py-2 text-sm font-bold text-ink"
+        >
+            🐾 {eyebrow}
+        </p>
+
+        <h1
+                class="mt-7 font-heading text-4xl font-extrabold
+             tracking-tight text-ink sm:text-5xl
+             lg:text-6xl"
+        >
+            {heading}
+        </h1>
+
+        {
+            paragraphs.map((paragraph) => (
+                    <p
+                            class="mx-auto mt-6 max-w-2xl text-lg
+                 leading-relaxed text-muted"
+                    >
+                        {paragraph}
+                    </p>
+            ))
+        }
+    </div>
+</section>

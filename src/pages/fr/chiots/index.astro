@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageIntro from "../../../components/ui/PageIntro.astro";
+import PuppyPreview from "../../../components/home/PuppyPreview.astro";
+import { pagesContent } from "../../../i18n/pages";
+
+/**
+ * French puppy availability page.
+ *
+ * Reuses the validated, CMS-backed listing component
+ * already displayed on the homepage.
+ */
+const content = pagesContent.fr.puppies;
+---
+
+<BaseLayout
+        title={content.title}
+        description={content.description}
+        lang="fr"
+>
+    <main id="main-content">
+        <PageIntro
+                eyebrow={content.eyebrow}
+                heading={content.heading}
+                paragraphs={content.paragraphs}
+        />
+
+        <PuppyPreview lang="fr" />
+    </main>
+</BaseLayout>

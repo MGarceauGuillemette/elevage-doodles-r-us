@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageIntro from "../../../components/ui/PageIntro.astro";
+import ContactSection from "../../../components/home/ContactSection.astro";
+import { pagesContent } from "../../../i18n/pages";
+
+/**
+ * English contact page.
+ *
+ * Uses the same verified contact channels as
+ * the French version.
+ */
+const content = pagesContent.en.contact;
+---
+
+<BaseLayout
+        title={content.title}
+        description={content.description}
+        lang="en"
+>
+    <main id="main-content">
+        <PageIntro
+                eyebrow={content.eyebrow}
+                heading={content.heading}
+                paragraphs={content.paragraphs}
+        />
+
+        <ContactSection lang="en" />
+    </main>
+</BaseLayout>
