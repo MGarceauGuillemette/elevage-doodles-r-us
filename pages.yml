@@ -1,0 +1,98 @@
+# Doodles R Us — Pages CMS configuration
+#
+# Defines the content that authorized editors can manage.
+# Field labels are in French for the business owner.
+#
+# Public business content only. Customer information and
+# private adoption records must never be stored here.
+
+# Images are uploaded to Astro's public directory.
+# The output path matches URLs used by PuppyCard.
+media:
+  input: public/images/puppies
+  output: /images/puppies
+  rename: safe
+  extensions:
+    - jpg
+    - jpeg
+    - png
+    - webp
+
+content:
+  # Manage all puppies in our existing JSON array.
+  - name: puppies
+    label: Chiots et disponibilités
+    type: file
+    path: src/data/puppies.json
+    format: json
+
+    # The JSON document contains an array of objects,
+    # rather than an object with a nested array.
+    list: true
+
+    fields:
+      - name: id
+        label: Identifiant unique
+        type: uuid
+        required: true
+        description: Identifiant technique du chiot.
+
+      - name: name
+        label: Nom du chiot
+        type: string
+        required: true
+
+      # Store stable status values in English while
+      # presenting understandable labels in French.
+      - name: status
+        label: Disponibilité
+        type: select
+        required: true
+        options:
+          values:
+            - name: available
+              label: Disponible
+            - name: reserved
+              label: Réservé
+            - name: adopted
+              label: Adopté
+
+      - name: description
+        label: Descriptions
+        type: object
+        required: true
+        fields:
+          - name: fr
+            label: Description française
+            type: text
+            required: true
+
+          - name: en
+            label: Description anglaise
+            type: text
+            required: true
+
+      - name: image
+        label: Photo du chiot
+        type: image
+        description: Photo autorisée par l'élevage.
+        options:
+          extensions:
+            - jpg
+            - jpeg
+            - png
+            - webp
+
+      # Alternative text makes photographs accessible
+      # to visitors using assistive technology.
+      - name: imageAlt
+        label: Description de la photo
+        type: object
+        fields:
+          - name: fr
+            label: Texte alternatif français
+            type: string
+
+          - name: en
+            label: Texte alternatif anglais
+            type: string
