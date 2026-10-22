@@ -1,0 +1,154 @@
+---
+import type { SiteLanguage } from "../../i18n/home";
+
+import { business } from "../../data/business";
+
+import {
+    createEmailUrl,
+    createPhoneUrl,
+    isFacebookUrl,
+} from "../../lib/contact";
+
+/**
+ * Homepage contact section.
+ *
+ * Displays verified public contact channels.
+ * Missing information never produces broken links.
+ *
+ * The section remains bilingual and responsive even
+ * before contact information is configured.
+ */
+interface Props {
+    lang: SiteLanguage;
+}
+
+const { lang } = Astro.props;
+
+const labels = {
+    fr: {
+        eyebrow: "Restons en contact",
+        heading: "Une question? Parlons-en!",
+        description:
+            "Vous aimeriez en savoir plus sur nos " +
+            "Goldendoodles? Voici comment nous joindre.",
+        email: "Nous écrire",
+        phone: "Nous appeler",
+        facebook: "Notre page Facebook",
+        comingSoon:
+            "Nos coordonnées seront disponibles " +
+            "prochainement.",
+    },
+
+    en: {
+        eyebrow: "Let's stay in touch",
+        heading: "Have a question? Let's talk!",
+        description:
+            "Interested in learning more about our " +
+            "Goldendoodles? Here's how to reach us.",
+        email: "Email us",
+        phone: "Call us",
+        facebook: "Our Facebook page",
+        comingSoon:
+            "Our contact details will be available soon.",
+    },
+};
+
+const t = labels[lang];
+
+const { email, phone, facebookUrl } = business.contact;
+
+/**
+ * Reject unsupported Facebook URLs rather than
+ * displaying potentially untrusted CMS content.
+ */
+const safeFacebookUrl =
+    facebookUrl && isFacebookUrl(facebookUrl)
+        ? facebookUrl
+        : null;
+
+const hasContactInformation = Boolean(
+    email || phone || safeFacebookUrl,
+);
+---
+
+<section
+        id="contact"
+        aria-labelledby="contact-heading"
+        class="scroll-mt-24 bg-peach px-6 py-20"
+>
+    <div class="mx-auto max-w-5xl text-center">
+        <p class="font-bold text-teal">
+            {t.eyebrow}
+        </p>
+
+        <h2
+                id="contact-heading"
+                class="mt-4 font-heading text-4xl
+             font-extrabold text-ink sm:text-5xl"
+        >
+            {t.heading}
+        </h2>
+
+        <p
+                class="mx-auto mt-6 max-w-2xl
+             text-lg leading-relaxed text-muted"
+        >
+            {t.description}
+        </p>
+
+        {
+            hasContactInformation ? (
+                    <div
+                            class="mt-10 flex flex-wrap items-center
+                 justify-center gap-4"
+                    >
+                        {email && (
+                                <a
+                                        href={createEmailUrl(email)}
+                                        class="inline-flex min-h-12 items-center
+                     justify-center rounded-full bg-teal
+                     px-7 py-3 font-bold text-white
+                     transition-colors hover:bg-ink"
+                                >
+                                    ✉️ {t.email}
+                                </a>
+                        )}
+
+                        {phone && (
+                                <a
+                                        href={createPhoneUrl(phone)}
+                                        class="inline-flex min-h-12 items-center
+                     justify-center rounded-full
+                     border-2 border-teal px-7 py-3
+                     font-bold text-teal hover:bg-sage"
+                                >
+                                    ☎️ {t.phone}
+                                </a>
+                        )}
+
+                        {safeFacebookUrl && (
+                                <a
+                                        href={safeFacebookUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-flex min-h-12 items-center
+                     justify-center rounded-full
+                     border-2 border-teal px-7 py-3
+                     font-bold text-teal hover:bg-sage"
+                                >
+                                    {t.facebook} ↗
+                                </a>
+                        )}
+                    </div>
+            ) : (
+                    <p
+                            class="mx-auto mt-10 max-w-xl rounded-2xl
+                 bg-white/70 px-6 py-5
+                 font-semibold text-ink"
+                    >
+                        {t.comingSoon}
+                    </p>
+            )
+        }
+    </div>
+</section>

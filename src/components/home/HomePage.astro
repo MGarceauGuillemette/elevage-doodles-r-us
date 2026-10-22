@@ -4,6 +4,7 @@ import {
     type SiteLanguage,
 } from "../../i18n/home";
 import PuppyPreview from "./PuppyPreview.astro"
+import ContactSection from "./ContactSection.astro";
 
 /**
  * Shared, responsive homepage.
@@ -147,31 +148,11 @@ const t = homeContent[lang];
     -->
     <PuppyPreview lang={lang} />
 
-    <!-- CONTACT: Real contact channels will be added later. -->
-    <section
-            id="contact"
-            aria-labelledby="contact-heading"
-            class="bg-peach px-6 py-20"
-    >
-        <div class="mx-auto max-w-4xl text-center">
-            <p class="font-bold text-teal">
-                {t.contact.eyebrow}
-            </p>
+    <!--
+  Shared bilingual contact section.
 
-            <h2
-                    id="contact-heading"
-                    class="mt-4 font-heading text-4xl
-               font-extrabold text-ink sm:text-5xl"
-            >
-                {t.contact.title}
-            </h2>
-
-            <p
-                    class="mx-auto mt-6 max-w-2xl text-lg
-               leading-relaxed text-muted"
-            >
-                {t.contact.description}
-            </p>
-        </div>
-    </section>
+  Only verified contact information is displayed.
+  Missing contact details use a friendly empty state.
+-->
+    <ContactSection lang={lang} />
 </main>

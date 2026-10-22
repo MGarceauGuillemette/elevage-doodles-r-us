@@ -1,91 +1,196 @@
+
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
+import type { SiteLanguage } from "../../i18n/home";
 
 /**
- * Shared navigation header.
+ * Shared responsive header.
  *
- * Displays the business name, homepage navigation,
- * and language switcher.
+ * Features:
+ * - Desktop navigation with section links.
+ * - Mobile navigation using native HTML disclosure controls.
+ * - French/English language switching.
+ * - Localized navigation labels.
  *
- * Uses Astro's i18n utilities to generate localized URLs.
+ * Since the site currently contains only two homepage
+ * routes, navigation links point to homepage sections.
  */
-
 interface Props {
-    lang: "fr" | "en";
+    lang: SiteLanguage;
 }
 
 const { lang } = Astro.props;
 
-// Localized labels displayed in the navigation.
 const labels = {
     fr: {
         home: "Accueil",
-        language: "English",
+        about: "À propos",
+        puppies: "Nos chiots",
+        contact: "Nous contacter",
+        menu: "Menu",
         navigation: "Navigation principale",
+        language: "English",
     },
+
     en: {
         home: "Home",
-        language: "Français",
+        about: "About us",
+        puppies: "Our puppies",
+        contact: "Contact us",
+        menu: "Menu",
         navigation: "Main navigation",
+        language: "Français",
     },
 };
 
 const t = labels[lang];
 
-// Generate links using Astro's locale configuration.
 const homeUrl = getRelativeLocaleUrl(lang, "");
 
-// For now, switching languages returns to the homepage.
-// Later, we will preserve the current page when possible.
-const otherLang = lang === "fr" ? "en" : "fr";
-const otherLangUrl = getRelativeLocaleUrl(otherLang, "");
+/**
+ * Anchor links include the homepage path so navigation
+ * will continue working from future secondary pages.
+ */
+const navigation = [
+    { label: t.home, href: homeUrl },
+    { label: t.about, href: `${homeUrl}#a-propos` },
+    { label: t.puppies, href: `${homeUrl}#chiots` },
+];
+
+const contactUrl = `${homeUrl}#contact`;
+
+const otherLanguage = lang === "fr" ? "en" : "fr";
+const languageUrl = getRelativeLocaleUrl(otherLanguage, "");
 ---
 
-<header class="border-b border-ink/10 bg-cream">
+<header
+        class="relative z-20 border-b border-ink/10
+         bg-cream"
+>
     <div
-            class="mx-auto flex max-w-7xl flex-wrap items-center
-           justify-between gap-4 px-6 py-5"
+            class="mx-auto flex max-w-7xl items-center
+           justify-between gap-4 px-5 py-4 lg:px-8"
     >
-        <!-- Business identity -->
+        <!-- Business identity links to the localized homepage. -->
         <a
                 href={homeUrl}
-                class="font-heading text-xl font-extrabold text-teal
+                class="flex items-center gap-3 font-heading
+             text-xl font-extrabold text-teal
              hover:text-ink"
         >
-            Doodles R Us 🐾
+      <span
+              class="rounded-xl bg-honey p-2 text-xl"
+              aria-hidden="true"
+      >
+        🐾
+      </span>
+
+            <span>Doodles R Us</span>
         </a>
 
-        <!--
-          Navigation remains simple until the other pages exist.
-          Flex-wrap keeps it usable on narrow screens without
-          requiring JavaScript.
-        -->
-        <nav aria-label={t.navigation}>
-            <ul class="flex flex-wrap items-center gap-5">
-                <li>
-                    <a
-                            href={homeUrl}
-                            aria-current="page"
-                            class="font-semibold text-ink hover:text-teal"
-                    >
-                        {t.home}
-                    </a>
-                </li>
+        <!-- Desktop navigation -->
+        <nav
+                aria-label={t.navigation}
+                class="hidden items-center gap-7 lg:flex"
+        >
+            {
+                navigation.map((item) => (
+                        <a
+                                href={item.href}
+                                class="font-semibold text-ink transition-colors
+                   hover:text-teal"
+                        >
+                            {item.label}
+                        </a>
+                ))
+            }
 
-                <li>
-                    <!-- Language switcher -->
-                    <a
-                            href={otherLangUrl}
-                            lang={otherLang}
-                            hreflang={otherLang}
-                            class="rounded-full border border-teal px-4 py-2
-                   text-sm font-semibold text-teal
-                   transition-colors hover:bg-sage"
-                    >
-                        {t.language}
-                    </a>
-                </li>
-            </ul>
+            <a
+                    href={contactUrl}
+                    class="rounded-full bg-teal px-6 py-3
+               font-bold text-white transition-colors
+               hover:bg-ink"
+            >
+                {t.contact}
+            </a>
+
+            <a
+                    href={languageUrl}
+                    lang={otherLanguage}
+                    hreflang={otherLanguage}
+                    class="rounded-full border border-teal
+               px-4 py-2 font-semibold text-teal
+               transition-colors hover:bg-sage"
+            >
+                {t.language}
+            </a>
         </nav>
+
+        <!--
+          Mobile and tablet navigation.
+
+          <details> gives us an accessible disclosure
+          mechanism without introducing a JavaScript framework.
+        -->
+        <details class="group relative lg:hidden">
+            <summary
+                    class="flex min-h-11 cursor-pointer list-none
+               items-center gap-2 rounded-xl
+               border border-teal px-4 py-2
+               font-semibold text-teal
+               [&::-webkit-details-marker]:hidden"
+            >
+                <span aria-hidden="true">☰</span>
+                {t.menu}
+            </summary>
+
+            <nav
+                    aria-label={t.navigation}
+                    class="absolute top-full right-0 mt-3
+               w-[min(20rem,calc(100vw-2rem))]
+               rounded-2xl border border-ink/10
+               bg-white p-5 shadow-xl"
+            >
+                <ul class="flex flex-col gap-4">
+                    {
+                        navigation.map((item) => (
+                                <li>
+                                    <a
+                                            href={item.href}
+                                            class="block py-2 font-semibold text-ink
+                         hover:text-teal"
+                                    >
+                                        {item.label}
+                                    </a>
+                                </li>
+                        ))
+                    }
+
+                    <li>
+                        <a
+                                href={contactUrl}
+                                class="block rounded-xl bg-teal
+                     px-5 py-3 text-center font-bold
+                     text-white hover:bg-ink"
+                        >
+                            {t.contact}
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                                href={languageUrl}
+                                lang={otherLanguage}
+                                hreflang={otherLanguage}
+                                class="block rounded-xl border border-teal
+                     px-5 py-3 text-center
+                     font-semibold text-teal"
+                        >
+                            {t.language}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </details>
     </div>
 </header>
