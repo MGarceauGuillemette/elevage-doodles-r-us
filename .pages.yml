@@ -96,3 +96,74 @@ content:
           - name: en
             label: Texte alternatif anglais
             type: string
+
+  # Business contact information shared by both languages.
+  #
+  # Prevent deletion of this file because the website
+  # requires it during static site generation.
+  - name: business
+    label: Coordonnées
+    type: file
+    path: src/data/business.json
+    format: json
+    operations:
+      create: false
+      delete: false
+    fields:
+      - name: email
+        label: Adresse courriel
+        type: string
+        description: Laisser vide si non disponible.
+
+      - name: phone
+        label: Numéro de téléphone
+        type: string
+        description: Exemple de format : +1 450 555 0123.
+
+      - name: facebookUrl
+        label: Lien Facebook
+        type: string
+        description: Adresse HTTPS de votre page Facebook.
+
+  # Bilingual About-page content.
+  #
+  # French and English descriptions are grouped together
+  # so the owner can edit both versions in one place.
+  - name: about
+    label: À propos de l'élevage
+    type: file
+    path: src/data/about.json
+    format: json
+    operations:
+      create: false
+      delete: false
+    fields:
+      - name: fr
+        label: Version française
+        type: object
+        required: true
+        fields:
+          - name: introduction
+            label: Présentation
+            type: text
+            required: true
+
+          - name: story
+            label: Notre histoire
+            type: text
+            required: true
+
+      - name: en
+        label: English version
+        type: object
+        required: true
+        fields:
+          - name: introduction
+            label: Introduction
+            type: text
+            required: true
+
+          - name: story
+            label: Our story
+            type: text
+            required: true

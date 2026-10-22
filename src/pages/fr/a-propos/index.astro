@@ -2,6 +2,7 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PageIntro from "../../../components/ui/PageIntro.astro";
 import { pagesContent } from "../../../i18n/pages";
+import { about } from "../../../data/about";
 
 /**
  * French About page.
@@ -21,7 +22,10 @@ const content = pagesContent.fr.about;
         <PageIntro
                 eyebrow={content.eyebrow}
                 heading={content.heading}
-                paragraphs={content.paragraphs}
+                paragraphs={[
+                    about.fr.introduction,
+                    about.fr.story,
+                ]}
         />
     </main>
 </BaseLayout>

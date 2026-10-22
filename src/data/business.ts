@@ -1,41 +1,22 @@
-/**
- * Public business information for Doodles R Us.
- *
- * Contact details are intentionally optional until
- * confirmed by the business owner.
- *
- * This module serves as our temporary data source.
- * Later, Pages CMS will manage the editable information
- * without requiring changes to the UI components.
- */
+import businessData from "./business.json";
 
-export interface BusinessContact {
-    email: string | null;
-    phone: string | null;
-    facebookUrl: string | null;
-}
-
-export interface BusinessInformation {
-    name: string;
-    city: string;
-    province: string;
-    contact: BusinessContact;
-}
+import {
+    validateBusinessContact,
+} from "../lib/validation/businessSchema";
 
 /**
- * Business details used across the website.
+ * Public business information shared across pages.
  *
- * Replace null values with verified information only.
- * Do not publish a private residential address.
+ * Contact values are managed through Pages CMS and
+ * validated during site generation.
+ *
+ * Fixed location information remains in code for now.
+ * We do not publish a residential street address.
  */
-export const business: BusinessInformation = {
+export const business = {
     name: "Doodles R Us",
     city: "Saint-Colomban",
     province: "Québec",
 
-    contact: {
-        email: "contact@example.com",
-        phone: "+1 450 555 0123",
-        facebookUrl: "https://www.facebook.com/",
-    },
+    contact: validateBusinessContact(businessData),
 };
