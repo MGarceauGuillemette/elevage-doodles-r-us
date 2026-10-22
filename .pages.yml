@@ -118,7 +118,7 @@ content:
       - name: phone
         label: Numéro de téléphone
         type: string
-        description: "Exemple de format : +1 450 555 0123".
+        description: "Exemple de format : +1 450 555 0123"
 
       - name: facebookUrl
         label: Lien Facebook
