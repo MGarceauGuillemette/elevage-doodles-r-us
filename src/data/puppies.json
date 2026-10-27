@@ -1,1 +1,43 @@
-[]
+[
+  {
+    "id": "751515bf-8a33-4c40-9bb3-281d2106df04",
+    "name": "ChiotTest1",
+    "status": "available",
+    "description": {
+      "fr": "Description francais chiot test 1",
+      "en": "Test puppy 1 english description"
+    },
+    "image": "/images/puppies/chiot-test-1.jpg",
+    "imageAlt": {
+      "fr": "Text alternatif francais test 1",
+      "en": "Alternativ english text 1"
+    }
+  },
+  {
+    "id": "1b44f897-639e-4352-b48a-0d22c19dc698",
+    "name": "ChiotTest2",
+    "status": "reserved",
+    "description": {
+      "fr": "Description francais chiot test 2",
+      "en": "Test puppy 2 english description"
+    },
+    "image": "/images/puppies/chiot-test-2.jpg",
+    "imageAlt": {
+      "fr": "Text alternatif francais 2",
+      "en": "English alternative text 2"
+    }
+  },
+  {
+    "id": "e1a3d082-f924-4526-92cb-4555dd13a9f5",
+    "name": "ChiotTest3",
+    "status": "adopted",
+    "description": {
+      "fr": "Description francais chiot test 3",
+      "en": "Test puppy 3 english description"
+    },
+    "imageAlt": {
+      "fr": "Text alternatif francais 3",
+      "en": "English alternative text 3"
+    }
+  }
+]
