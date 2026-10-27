@@ -101,19 +101,30 @@ const languageUrl = getPageUrl(
             class="mx-auto flex max-w-7xl items-center
            justify-between gap-4 px-5 py-4 lg:px-8"
     >
-        <!-- Business identity links to the localized homepage. -->
+        <!--
+          Official business logo.
+
+          The logo is stored in the public branding directory
+          so it can be replaced independently of the component.
+
+          Keep the business name as visible text to ensure
+          the header remains recognizable and accessible.
+        -->
         <a
                 href={homeUrl}
                 class="flex items-center gap-3 font-heading
-             text-xl font-extrabold text-teal
-             hover:text-ink"
+         text-xl font-extrabold text-teal
+         hover:text-ink"
         >
-      <span
-              class="rounded-xl bg-honey p-2 text-xl"
-              aria-hidden="true"
-      >
-        🐾
-      </span>
+            <img
+                    src="/images/branding/doodles-r-us-logo.png"
+                    alt=""
+                    width="56"
+                    height="56"
+                    loading="eager"
+                    decoding="async"
+                    class="h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14"
+            />
 
             <span>Doodles R Us</span>
         </a>
