@@ -1,44 +1,69 @@
 /*
- * Nunito is bundled with the website rather than loaded
- * from a third-party CDN.
+ * Doodles R Us — Rustic Design System
  *
- * This improves reliability and avoids external font
- * requests when visitors open the website.
+ * Inspired by the breeder's official visual branding:
+ * warm wood, kraft paper, natural linen, sage green,
+ * and muted rose.
+ *
+ * All shared visual tokens are defined here so that
+ * future brand adjustments require minimal code changes.
  */
+
+/* Locally bundled font used for body text and navigation. */
 @import "@fontsource-variable/nunito";
 @import "tailwindcss";
 
 /*
- * Doodles R Us — Design System
+ * Tailwind CSS v4 design tokens.
  *
- * Centralized design tokens for consistent styling.
- * Tailwind CSS v4 exposes these as utility classes.
+ * Custom --color-* variables generate matching utility
+ * classes such as bg-wood, text-espresso, and border-linen.
  */
-
 @theme {
-    /*
-     * Brand colours already established in Milestone 2.
-     * Keep any existing tokens when updating this block.
-     */
-    --color-cream: #FFF9F2;
-    --color-honey: #F3BE69;
-    --color-peach: #F5D5CA;
-    --color-sage: #BDD4BA;
-    --color-teal: #176B68;
+    /* Primary rustic palette */
+    --color-cream: #F6F0E4;
+    --color-linen: #FBF8F1;
+    --color-kraft: #E6D4B8;
+    --color-wood: #68462F;
+    --color-espresso: #30241C;
+    --color-forest: #344B3D;
+    --color-sage: #A8AF91;
+    --color-rose: #C99588;
 
-    --color-ink: #29353A;
-    --color-muted: #52615D;
+    /* Functional text colours */
+    --color-ink: #30241C;
+    --color-muted: #645447;
 
     /*
-     * The variable font supports multiple weights without
-     * downloading a separate file for every weight.
+     * Compatibility tokens.
+     *
+     * Existing components still use honey, peach, and teal.
+     * Mapping them to rustic colours lets us gradually
+     * redesign components without breaking their styling.
      */
-    --font-heading: "Nunito Variable", sans-serif;
+    --color-honey: #D8B47F;
+    --color-peach: #EBD5C7;
+    --color-teal: #344B3D;
+
+    /*
+     * Georgia provides a traditional countryside look.
+     * Nunito remains our accessible, readable body font.
+     */
+    --font-heading: Georgia, "Times New Roman", serif;
     --font-body: "Nunito Variable", sans-serif;
+
+    /* Consistent rustic surface styling */
+    --radius-rustic: 1.25rem;
+    --shadow-rustic:
+            0 8px 24px rgb(48 36 28 / 0.10);
 }
 
-/* Global defaults */
-
+/*
+ * Global element defaults.
+ *
+ * Typography and background colours apply consistently
+ * across both French and English pages.
+ */
 html {
     scroll-behavior: smooth;
 }
@@ -48,14 +73,32 @@ body {
     background-color: var(--color-cream);
     color: var(--color-ink);
     font-family: var(--font-body);
+    line-height: 1.6;
 }
 
+/* Form controls should inherit the website typography. */
 button,
-a {
-    -webkit-tap-highlight-color: transparent;
+input,
+select,
+textarea {
+    font: inherit;
 }
 
+/*
+ * Visible keyboard focus is essential for accessibility.
+ * The dark forest colour contrasts with light backgrounds.
+ */
 :focus-visible {
-    outline: 3px solid var(--color-teal);
+    outline: 3px solid var(--color-forest);
     outline-offset: 3px;
+}
+
+/*
+ * Avoid forced smooth scrolling for visitors who prefer
+ * reduced motion.
+ */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
 }
