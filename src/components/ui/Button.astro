@@ -39,12 +39,18 @@ const baseClasses = [
     "focus-visible:outline-teal",
 ].join(" ");
 
+/**
+ * Rustic button variants.
+ *
+ * Shared styles ensure that homepage and contact actions
+ * use the same updated brand palette.
+ */
 const variants: Record<ButtonVariant, string> = {
     primary:
-        "bg-teal text-white hover:bg-ink",
+        "bg-wood text-white hover:bg-espresso",
 
     secondary:
-        "border-2 border-teal text-teal hover:bg-sage",
+        "border-2 border-wood text-wood hover:bg-kraft",
 };
 ---
 

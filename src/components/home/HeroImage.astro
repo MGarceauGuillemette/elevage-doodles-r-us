@@ -3,13 +3,14 @@ import { heroImage } from "../../data/siteMedia";
 import type { SiteLanguage } from "../../i18n/home";
 
 /**
- * Hero image for the bilingual homepage.
+ * Rustic hero photograph component.
  *
- * Displays an approved breeder photograph when available.
- * Otherwise, renders a decorative placeholder.
+ * Uses layered paper-like surfaces and subtle rotation
+ * to create a handmade family-album appearance.
  *
- * The container maintains a consistent aspect ratio
- * to minimize layout shifts across screen sizes.
+ * The image itself remains controlled through siteMedia.
+ * If no approved photograph is configured, the component
+ * displays a localized placeholder.
  */
 interface Props {
     lang: SiteLanguage;
@@ -17,62 +18,107 @@ interface Props {
 
 const { lang } = Astro.props;
 
-const placeholderText = {
-    fr: "Nos Goldendoodles en images, bientôt!",
-    en: "Photos of our Goldendoodles coming soon!",
+const labels = {
+    fr: {
+        placeholder: "Nos Goldendoodles en images, bientôt!",
+        caption: "De beaux moments à quatre pattes",
+    },
+    en: {
+        placeholder: "Photos of our Goldendoodles coming soon!",
+        caption: "Beautiful moments with our four-legged friends",
+    },
 };
 
-const hasImage = Boolean(heroImage.src);
+const t = labels[lang];
 ---
 
-<div class="relative mx-auto w-full max-w-xl">
-    <!-- Decorative background accent -->
+<div class="relative mx-auto w-full max-w-lg px-4 py-8">
+    <!-- Soft background accents inspired by natural paper. -->
     <div
-            class="absolute -top-4 -right-3 h-24 w-24
-           rounded-full bg-honey sm:h-32 sm:w-32"
+            class="absolute top-3 right-0 h-24 w-24
+           rounded-full bg-sage/60 blur-xl"
             aria-hidden="true"
     ></div>
 
     <div
-            class="relative aspect-[4/5] overflow-hidden
-           rounded-[2.5rem] bg-peach shadow-xl
-           sm:rounded-[3rem]"
+            class="absolute bottom-4 left-0 h-28 w-28
+           rounded-full bg-rose/40 blur-xl"
+            aria-hidden="true"
+    ></div>
+
+    <!--
+      The outer layer mimics the paper backing of a framed
+      family photograph. Rotation is deliberately subtle.
+    -->
+    <div
+            class="relative rotate-[-2deg] rounded-sm
+           border border-wood/25 bg-kraft p-3
+           shadow-rustic sm:p-4"
     >
-        {
-            hasImage && heroImage.src ? (
-                    <img
-                            src={heroImage.src}
-                            alt={heroImage.alt[lang]}
-                            width="800"
-                            height="1000"
-                            fetchpriority="high"
-                            decoding="async"
-                            class="h-full w-full object-cover"
-                    />
-            ) : (
-                    <div
-                            class="flex h-full flex-col items-center
-                 justify-center gap-5 p-8 text-center"
-                    >
-          <span
-                  class="text-8xl sm:text-9xl"
-                  aria-hidden="true"
-          >
-            🐶
-          </span>
+        <div
+                class="border border-wood/20
+             bg-linen p-2 sm:p-3"
+        >
+            <!-- Fixed aspect ratio avoids layout shifts. -->
+            <div
+                    class="relative aspect-[4/5] overflow-hidden
+               bg-peach"
+            >
+                {
+                    heroImage.src ? (
+                            <img
+                                    src={heroImage.src}
+                                    alt={heroImage.alt[lang]}
+                                    width="800"
+                                    height="1000"
+                                    fetchpriority="high"
+                                    decoding="async"
+                                    class="h-full w-full object-cover"
+                            />
+                    ) : (
+                            <div
+                                    class="flex h-full flex-col items-center
+                     justify-center gap-5 p-6 text-center"
+                            >
+              <span
+                      aria-hidden="true"
+                      class="text-7xl sm:text-9xl"
+              >
+                🐶
+              </span>
 
-                        <p class="max-w-xs text-lg font-bold text-ink">
-                            {placeholderText[lang]}
-                        </p>
-                    </div>
-            )
-        }
+                                <p class="max-w-xs font-heading text-xl
+                        font-bold text-espresso"
+                                >
+                                    {t.placeholder}
+                                </p>
+                            </div>
+                    )
+                }
+            </div>
+
+            <!--
+              Decorative photo caption.
+              Text remains horizontal for readability.
+            -->
+            <div class="px-2 py-5 text-center">
+                <p
+                        class="font-heading text-lg font-bold
+                 italic text-wood sm:text-xl"
+                >
+                    {t.caption}
+                </p>
+
+                <div
+                        class="mt-2 flex justify-center gap-3
+                 text-rose"
+                        aria-hidden="true"
+                >
+                    <span>♡</span>
+                    <span>✦</span>
+                    <span>♡</span>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Small decorative accent below the photograph -->
-    <div
-            class="absolute -bottom-4 -left-3 h-20 w-20
-           rounded-full bg-sage sm:h-28 sm:w-28"
-            aria-hidden="true"
-    ></div>
 </div>

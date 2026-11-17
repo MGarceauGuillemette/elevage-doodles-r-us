@@ -28,74 +28,117 @@ const t = homeContent[lang];
 
 <main id="main-content">
     <!--
-      HERO SECTION
+      RUSTIC HOMEPAGE HERO
 
-      Introduces the business and directs visitors toward
-      puppy availability and contact information.
+      The two-column layout balances readable business
+      information with an approved breeder photograph.
 
-      The image is managed independently from the hero copy,
-      allowing us to add real photographs without changing
-      the page's layout.
+      Decorative shapes are intentionally subtle so the
+      design remains usable and accessible on small screens.
     -->
     <section
-            class="relative overflow-hidden px-6 py-16
-         sm:py-20 lg:py-28"
+            class="relative overflow-hidden bg-cream
+         px-5 py-14 sm:px-6 sm:py-20 lg:py-24"
     >
+        <!-- Decorative countryside-inspired accents -->
         <div
-                class="mx-auto grid max-w-7xl items-center
-           gap-14 lg:grid-cols-2 lg:gap-20"
+                class="pointer-events-none absolute -top-24
+           -left-24 h-72 w-72 rounded-full
+           bg-kraft/40 blur-3xl"
+                aria-hidden="true"
+        ></div>
+
+        <div
+                class="relative mx-auto grid max-w-7xl
+           items-center gap-12 lg:grid-cols-2
+           lg:gap-16"
         >
-            <!-- Primary homepage content -->
-            <div class="relative z-10">
-                <p
-                        class="inline-flex items-center rounded-full
-               bg-sage px-5 py-2 text-sm
-               font-bold text-ink"
+            <!-- Main business introduction -->
+            <div class="text-center lg:text-left">
+                <!-- Kraft paper-style section label -->
+                <div
+                        class="inline-flex items-center gap-2
+               rounded-lg border border-wood/20
+               bg-kraft px-5 py-2.5
+               shadow-sm"
                 >
-                    🐾 {t.eyebrow}
-                </p>
+                    <span aria-hidden="true">♡</span>
+
+                    <p class="text-sm font-bold tracking-wide
+                  text-wood"
+                    >
+                        {t.eyebrow}
+                    </p>
+                </div>
 
                 <h1
-                        class="mt-7 max-w-2xl font-heading
-               text-4xl leading-[1.12] font-extrabold
-               tracking-tight text-ink
-               sm:text-5xl lg:text-6xl xl:text-7xl"
+                        class="mt-8 max-w-2xl font-heading
+               text-4xl leading-[1.15]
+               font-bold tracking-tight
+               text-espresso sm:text-5xl
+               xl:text-6xl"
                 >
                     {t.heading}
                 </h1>
 
+                <!-- Natural divider inspired by the owner's art -->
+                <div
+                        class="mx-auto mt-6 flex items-center
+               justify-center gap-4 text-wood/70
+               lg:mx-0 lg:justify-start"
+                        aria-hidden="true"
+                >
+                    <span class="h-px w-14 bg-wood/40"></span>
+                    <span>✦</span>
+                    <span class="h-px w-14 bg-wood/40"></span>
+                </div>
+
                 <p
-                        class="mt-7 max-w-xl text-lg leading-relaxed
-               text-muted sm:text-xl"
+                        class="mx-auto mt-7 max-w-xl
+               text-lg leading-relaxed
+               text-muted sm:text-xl lg:mx-0"
                 >
                     {t.introduction}
                 </p>
 
                 <!--
-                  Reusable navigation actions.
-                  Both destinations currently exist on the homepage.
+                  Shared button components keep both languages
+                  consistent and preserve working section anchors.
                 -->
-                <div class="mt-9 flex flex-wrap gap-4">
-                    <Button href="#chiots">
+                <div
+                        class="mt-9 flex flex-wrap
+               justify-center gap-4 lg:justify-start"
+                >
+                    <Button
+                            href="#chiots"
+                            class="rounded-xl bg-wood
+                 text-white hover:bg-espresso"
+                    >
                         {t.discoverButton}
                     </Button>
 
-                    <Button href="#contact" variant="secondary">
+                    <Button
+                            href="#contact"
+                            variant="secondary"
+                            class="rounded-xl border-wood
+                 text-wood hover:bg-kraft"
+                    >
                         {t.contactButton}
                     </Button>
                 </div>
 
-                <!-- Location information only; no private address. -->
+                <!-- Public location, without a residential address -->
                 <div
-                        class="mt-10 flex items-center gap-2
-               text-sm font-semibold text-muted"
+                        class="mt-9 flex items-center justify-center
+               gap-2 text-sm font-bold
+               text-muted lg:justify-start"
                 >
-                    <span aria-hidden="true">📍</span>
+                    <span aria-hidden="true">⌖</span>
                     <span>Saint-Colomban, Québec</span>
                 </div>
             </div>
 
-            <!-- Responsive photograph or temporary placeholder -->
+            <!-- Framed photograph shared by both languages -->
             <HeroImage lang={lang} />
         </div>
     </section>
