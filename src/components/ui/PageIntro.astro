@@ -1,12 +1,11 @@
 ---
 /**
-    * Shared introduction for secondary pages.
+    * Reusable rustic introduction for secondary pages.
     *
-    * Displays a consistent eyebrow, page heading,
-    * and optional introductory paragraphs.
+    * Used by About, Puppies and Contact pages.
     *
-    * The component receives already-localized content
-    * and does not need to know the active language.
+    * Receives translated content as props, keeping the
+    * presentation independent of localization and CMS data.
     */
 interface Props {
     eyebrow: string;
@@ -22,41 +21,69 @@ const {
 ---
 
 <section
+        aria-labelledby="page-intro-heading"
         class="relative overflow-hidden bg-cream
-         px-6 py-16 sm:py-20"
+         px-5 py-16 sm:px-6 sm:py-20 lg:py-24"
 >
-    <!-- Decorative accent without semantic meaning. -->
+    <!-- Subtle decorative background accent -->
     <div
-            class="pointer-events-none absolute -top-16 right-0
-           h-48 w-48 rounded-full bg-honey/30 blur-3xl"
+            class="pointer-events-none absolute -top-20
+           -right-20 h-64 w-64 rounded-full
+           bg-sage/25 blur-3xl"
             aria-hidden="true"
     ></div>
 
-    <div class="relative mx-auto max-w-4xl text-center">
-        <p
-                class="inline-flex rounded-full bg-sage
-             px-5 py-2 text-sm font-bold text-ink"
+    <div class="relative mx-auto max-w-4xl">
+        <!-- Rustic paper backing -->
+        <div
+                class="border border-wood/25 bg-kraft
+             p-3 shadow-rustic sm:p-4"
         >
-            🐾 {eyebrow}
-        </p>
+            <div
+                    class="border border-wood/20 bg-linen
+               px-6 py-12 text-center sm:px-12"
+            >
+                <p
+                        class="font-bold tracking-wide text-wood"
+                >
+                    {eyebrow}
+                </p>
 
-        <h1
-                class="mt-7 font-heading text-4xl font-extrabold
-             tracking-tight text-ink sm:text-5xl
-             lg:text-6xl"
-        >
-            {heading}
-        </h1>
+                <h1
+                        id="page-intro-heading"
+                        class="mt-6 font-heading text-4xl
+                 font-bold text-espresso
+                 sm:text-5xl lg:text-6xl"
+                >
+                    {heading}
+                </h1>
 
-        {
-            paragraphs.map((paragraph) => (
-                    <p
-                            class="mx-auto mt-6 max-w-2xl text-lg
-                 leading-relaxed text-muted"
-                    >
-                        {paragraph}
-                    </p>
-            ))
-        }
+                <div
+                        class="my-6 flex items-center
+                 justify-center gap-4 text-rose"
+                        aria-hidden="true"
+                >
+                    <span class="h-px w-14 bg-wood/40"></span>
+                    <span>✦</span>
+                    <span class="h-px w-14 bg-wood/40"></span>
+                </div>
+
+                <!--
+                  Each paragraph remains separate for readability.
+                  Content may originate from Pages CMS.
+                -->
+                {
+                    paragraphs.map((paragraph) => (
+                            <p
+                                    class="mx-auto mt-5 max-w-2xl
+                     whitespace-pre-line text-lg
+                     leading-relaxed text-muted"
+                            >
+                                {paragraph}
+                            </p>
+                    ))
+                }
+            </div>
+        </div>
     </div>
 </section>

@@ -7,6 +7,8 @@ import PuppyPreview from "./PuppyPreview.astro"
 import ContactSection from "./ContactSection.astro";
 import Button from "../ui/Button.astro";
 import HeroImage from "./HeroImage.astro";
+import { about } from "../../data/about";
+import { getPageUrl } from "../../lib/routes";
 
 /**
  * Shared, responsive homepage.
@@ -143,31 +145,91 @@ const t = homeContent[lang];
         </div>
     </section>
 
-    <!-- ABOUT: Introduces the breeder without unverified claims. -->
+
+    <!--
+      ABOUT SECTION
+
+      Introduces the breeder using CMS-managed bilingual
+      content. The paper-style panel reflects the owner's
+      handmade countryside visual identity.
+
+      The link leads to the dedicated localized About page.
+    -->
     <section
             id="a-propos"
-            aria-labelledby="about-heading"
-            class="bg-white px-6 py-20"
+            aria-labelledby="home-about-heading"
+            class="relative scroll-mt-24 overflow-hidden
+         bg-linen px-5 py-20 sm:px-6 lg:py-28"
     >
-        <div class="mx-auto max-w-4xl text-center">
-            <p class="font-bold text-teal">
-                {t.about.eyebrow}
-            </p>
+        <!-- Decorative accents have no semantic meaning. -->
+        <div
+                class="pointer-events-none absolute -top-16
+           right-0 h-64 w-64 rounded-full
+           bg-kraft/40 blur-3xl"
+                aria-hidden="true"
+        ></div>
 
-            <h2
-                    id="about-heading"
-                    class="mt-4 font-heading text-4xl font-extrabold
-               text-ink sm:text-5xl"
+        <div class="relative mx-auto max-w-5xl">
+            <!-- Outer kraft-paper frame -->
+            <div
+                    class="border border-wood/25 bg-kraft
+             p-3 shadow-rustic sm:p-5"
             >
-                {t.about.title}
-            </h2>
+                <!-- Inner story panel -->
+                <div
+                        class="border border-wood/20 bg-cream
+               px-6 py-12 text-center
+               sm:px-12 sm:py-16"
+                >
+                    <p
+                            class="font-bold tracking-wide text-wood"
+                    >
+                        {t.about.eyebrow}
+                    </p>
 
-            <p
-                    class="mx-auto mt-6 max-w-2xl text-lg
-               leading-relaxed text-muted"
-            >
-                {t.about.description}
-            </p>
+                    <h2
+                            id="home-about-heading"
+                            class="mt-5 font-heading text-4xl
+                 font-bold text-espresso
+                 sm:text-5xl"
+                    >
+                        {t.about.title}
+                    </h2>
+
+                    <!-- Handmade ornamental divider -->
+                    <div
+                            class="my-6 flex items-center
+                 justify-center gap-4 text-rose"
+                            aria-hidden="true"
+                    >
+                        <span class="h-px w-14 bg-wood/40"></span>
+                        <span>♡</span>
+                        <span class="h-px w-14 bg-wood/40"></span>
+                    </div>
+
+                    <!--
+                      Text is validated before rendering.
+                      It remains editable through Pages CMS.
+                    -->
+                    <p
+                            class="mx-auto max-w-2xl text-lg
+                 leading-relaxed text-muted"
+                    >
+                        {about[lang].introduction}
+                    </p>
+
+                    <div class="mt-9">
+                        <Button
+                                href={getPageUrl("about", lang)}
+                                variant="secondary"
+                        >
+                            {lang === "fr"
+                                ? "Découvrir notre histoire"
+                                : "Discover our story"}
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

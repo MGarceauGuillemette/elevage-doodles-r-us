@@ -9,14 +9,19 @@ import {
     isFacebookUrl,
 } from "../../lib/contact";
 
+import Button from "../ui/Button.astro";
+
 /**
- * Homepage contact section.
+ * Rustic bilingual contact section.
  *
- * Displays verified public contact channels.
- * Missing information never produces broken links.
+ * Responsibilities:
+ * - Display verified public business contact channels.
+ * - Avoid broken links when information is missing.
+ * - Provide accessible, clearly labeled actions.
+ * - Preserve the owner's ability to edit contact data
+ *   through Pages CMS.
  *
- * The section remains bilingual and responsive even
- * before contact information is configured.
+ * Validation of CMS content happens in business.ts.
  */
 interface Props {
     lang: SiteLanguage;
@@ -29,37 +34,38 @@ const labels = {
         eyebrow: "Restons en contact",
         heading: "Une question? Parlons-en!",
         description:
-            "Vous aimeriez en savoir plus sur nos " +
-            "Goldendoodles? Voici comment nous joindre.",
+            "Vous souhaitez en savoir davantage sur nos " +
+            "Goldendoodles? Nous serons heureux de vous lire.",
         email: "Nous écrire",
         phone: "Nous appeler",
         facebook: "Notre page Facebook",
         comingSoon:
-            "Nos coordonnées seront disponibles " +
-            "prochainement.",
+            "Nos coordonnées seront publiées ici prochainement.",
     },
 
     en: {
         eyebrow: "Let's stay in touch",
         heading: "Have a question? Let's talk!",
         description:
-            "Interested in learning more about our " +
-            "Goldendoodles? Here's how to reach us.",
+            "Would you like to learn more about our " +
+            "Goldendoodles? We'd be happy to hear from you.",
         email: "Email us",
         phone: "Call us",
         facebook: "Our Facebook page",
         comingSoon:
-            "Our contact details will be available soon.",
+            "Our contact details will be published here soon.",
     },
-};
+} as const;
 
 const t = labels[lang];
 
 const { email, phone, facebookUrl } = business.contact;
 
 /**
- * Reject unsupported Facebook URLs rather than
- * displaying potentially untrusted CMS content.
+ * Validate the Facebook destination before rendering it.
+ *
+ * Although CMS data is already validated, this additional
+ * guard keeps external-link handling explicit.
  */
 const safeFacebookUrl =
     facebookUrl && isFacebookUrl(facebookUrl)
@@ -74,81 +80,97 @@ const hasContactInformation = Boolean(
 <section
         id="contact"
         aria-labelledby="contact-heading"
-        class="scroll-mt-24 bg-peach px-6 py-20"
+        class="relative scroll-mt-24 overflow-hidden
+         bg-rose/25 px-5 py-20 sm:px-6 lg:py-24"
 >
-    <div class="mx-auto max-w-5xl text-center">
-        <p class="font-bold text-teal">
-            {t.eyebrow}
-        </p>
-
-        <h2
-                id="contact-heading"
-                class="mt-4 font-heading text-4xl
-             font-extrabold text-ink sm:text-5xl"
+    <div class="relative mx-auto max-w-5xl">
+        <!-- Paper backing inspired by rustic invitation cards -->
+        <div
+                class="border border-wood/30 bg-kraft
+             p-3 shadow-rustic sm:p-5"
         >
-            {t.heading}
-        </h2>
+            <div
+                    class="border border-wood/20 bg-linen
+               px-6 py-12 text-center sm:px-12 sm:py-16"
+            >
+                <p class="font-bold tracking-wide text-wood">
+                    {t.eyebrow}
+                </p>
 
-        <p
-                class="mx-auto mt-6 max-w-2xl
-             text-lg leading-relaxed text-muted"
-        >
-            {t.description}
-        </p>
+                <h2
+                        id="contact-heading"
+                        class="mt-5 font-heading text-4xl
+                 font-bold text-espresso sm:text-5xl"
+                >
+                    {t.heading}
+                </h2>
 
-        {
-            hasContactInformation ? (
-                    <div
-                            class="mt-10 flex flex-wrap items-center
-                 justify-center gap-4"
-                    >
-                        {email && (
-                                <a
-                                        href={createEmailUrl(email)}
-                                        class="inline-flex min-h-12 items-center
-                     justify-center rounded-full bg-teal
-                     px-7 py-3 font-bold text-white
-                     transition-colors hover:bg-ink"
-                                >
-                                    ✉️ {t.email}
-                                </a>
-                        )}
+                <!-- Decorative divider -->
+                <div
+                        class="my-6 flex items-center
+                 justify-center gap-4 text-rose"
+                        aria-hidden="true"
+                >
+                    <span class="h-px w-14 bg-wood/40"></span>
+                    <span>♡</span>
+                    <span class="h-px w-14 bg-wood/40"></span>
+                </div>
 
-                        {phone && (
-                                <a
-                                        href={createPhoneUrl(phone)}
-                                        class="inline-flex min-h-12 items-center
-                     justify-center rounded-full
-                     border-2 border-teal px-7 py-3
-                     font-bold text-teal hover:bg-sage"
-                                >
-                                    ☎️ {t.phone}
-                                </a>
-                        )}
+                <p
+                        class="mx-auto max-w-2xl text-lg
+                 leading-relaxed text-muted"
+                >
+                    {t.description}
+                </p>
 
-                        {safeFacebookUrl && (
-                                <a
-                                        href={safeFacebookUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="inline-flex min-h-12 items-center
-                     justify-center rounded-full
-                     border-2 border-teal px-7 py-3
-                     font-bold text-teal hover:bg-sage"
-                                >
-                                    {t.facebook} ↗
-                                </a>
-                        )}
-                    </div>
-            ) : (
-                    <p
-                            class="mx-auto mt-10 max-w-xl rounded-2xl
-                 bg-white/70 px-6 py-5
-                 font-semibold text-ink"
-                    >
-                        {t.comingSoon}
-                    </p>
-            )
-        }
+                {
+                    hasContactInformation ? (
+                        /*
+                         * Buttons are conditional so missing CMS fields
+                         * never produce empty mailto:, tel:, or external links.
+                         */
+                            <div
+                                    class="mt-10 flex flex-wrap
+                     items-center justify-center gap-4"
+                            >
+                                {email && (
+                                        <Button href={createEmailUrl(email)}>
+                                            {t.email}
+                                        </Button>
+                                )}
+
+                                {phone && (
+                                        <Button
+                                                href={createPhoneUrl(phone)}
+                                                variant="secondary"
+                                        >
+                                            {t.phone}
+                                        </Button>
+                                )}
+
+                                {safeFacebookUrl && (
+                                        <Button
+                                                href={safeFacebookUrl}
+                                                variant="secondary"
+                                                external
+                                        >
+                                            {t.facebook}
+                                            <span aria-hidden="true"> ↗</span>
+                                        </Button>
+                                )}
+                            </div>
+                    ) : (
+                            <p
+                                    class="mx-auto mt-10 max-w-lg
+                     border border-wood/20
+                     bg-cream px-6 py-5
+                     font-semibold text-muted"
+                            >
+                                {t.comingSoon}
+                            </p>
+                    )
+                }
+            </div>
+        </div>
     </div>
 </section>
