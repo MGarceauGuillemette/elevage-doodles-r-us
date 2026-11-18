@@ -7,11 +7,16 @@ import type {
 import type { SiteLanguage } from "../../i18n/home";
 
 /**
- * Reusable card for displaying a single puppy.
+ * Rustic puppy listing card.
  *
- * The card receives typed data rather than reading from
- * a file directly. This separation makes the component
- * reusable and easier to test.
+ * Responsibilities:
+ * - Display validated puppy data from Pages CMS.
+ * - Translate availability labels and descriptions.
+ * - Render a photograph or a friendly fallback.
+ * - Use a country-inspired paper and photo-frame design.
+ *
+ * Presentation is intentionally independent of the CMS.
+ * Content validation occurs before this component renders.
  */
 interface Props {
     puppy: Puppy;
@@ -21,9 +26,10 @@ interface Props {
 const { puppy, lang } = Astro.props;
 
 /**
- * Localized labels for each availability status.
+ * Availability status labels.
  *
- * The status itself remains language-independent.
+ * Internal status values remain language-independent,
+ * while the interface displays localized text.
  */
 const statusLabels: Record<
     SiteLanguage,
@@ -34,6 +40,7 @@ const statusLabels: Record<
         reserved: "Réservé",
         adopted: "Adopté",
     },
+
     en: {
         available: "Available",
         reserved: "Reserved",
@@ -42,68 +49,126 @@ const statusLabels: Record<
 };
 
 /**
- * Status-specific styles are explicitly mapped so that
- * Tailwind can detect and generate these utility classes.
+ * Static Tailwind classes for each status.
+ *
+ * Explicit class strings allow Tailwind CSS v4 to
+ * detect all colours during the production build.
  */
 const statusStyles: Record<PuppyStatus, string> = {
-    available: "bg-sage text-ink",
-    reserved: "bg-honey text-ink",
-    adopted: "bg-peach text-ink",
+    available: "bg-sage text-espresso",
+    reserved: "bg-honey text-espresso",
+    adopted: "bg-peach text-espresso",
 };
 
-const imageFallback =
-    lang === "fr" ? "Photo à venir" : "Photo coming soon";
+/**
+ * Localized fallback displayed when the breeder
+ * has not uploaded a photograph for this puppy.
+ */
+const imageFallback = {
+    fr: "Photo à venir",
+    en: "Photo coming soon",
+};
+
+const statusLabel = statusLabels[lang][puppy.status];
 ---
 
 <article
-        class="overflow-hidden rounded-3xl border border-ink/10
-         bg-white shadow-sm transition-shadow hover:shadow-md"
+        class="group flex h-full flex-col
+         border border-wood/25 bg-kraft
+         p-3 shadow-rustic
+         transition-shadow duration-200
+         hover:shadow-lg sm:p-4"
 >
     <!--
-      Only display actual photographs supplied by the breeder.
-      A styled fallback is used when a photograph is unavailable.
+      Paper photo frame.
+
+      The image container reserves space before the
+      photograph loads, reducing layout shifts.
     -->
-    <div
-            class="flex aspect-[4/3] items-center justify-center
-           overflow-hidden bg-peach"
-    >
-        {
-            puppy.image ? (
-                    <img
-                            src={puppy.image}
-                            alt={puppy.imageAlt?.[lang] || puppy.name}
-                            class="h-full w-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                    />
-            ) : (
-                    <div class="text-center">
-          <span class="block text-6xl" aria-hidden="true">
-            🐾
-          </span>
-                        <p class="mt-3 font-semibold text-ink">
-                            {imageFallback}
-                        </p>
-                    </div>
-            )
-        }
+    <div class="border border-wood/15 bg-linen p-2">
+        <div
+                class="relative aspect-[4/5]
+             overflow-hidden bg-peach"
+        >
+            {
+                puppy.image ? (
+                        <img
+                                src={puppy.image}
+                                alt={puppy.imageAlt?.[lang] || puppy.name}
+                                loading="lazy"
+                                decoding="async"
+                                width="600"
+                                height="750"
+                                class="h-full w-full object-cover
+                   transition-transform duration-300
+                   motion-safe:group-hover:scale-[1.02]"
+                        />
+                ) : (
+                        <div
+                                class="flex h-full flex-col items-center
+                   justify-center gap-4 p-6 text-center"
+                        >
+            <span
+                    aria-hidden="true"
+                    class="text-6xl sm:text-7xl"
+            >
+              🐾
+            </span>
+
+                            <p class="font-semibold text-espresso">
+                                {imageFallback[lang]}
+                            </p>
+                        </div>
+                )
+            }
+        </div>
     </div>
 
-    <div class="p-6">
+    <!--
+      Availability tag uses both text and colour,
+      preserving meaning for colour-blind visitors.
+    -->
+    <div class="relative z-10 -mt-3 flex justify-center">
     <span
             class:list={[
-                "inline-block rounded-full px-4 py-1.5 text-sm font-bold",
+                "inline-flex items-center gap-2",
+                "border border-wood/20 px-5 py-2",
+                "text-sm font-extrabold shadow-sm",
                 statusStyles[puppy.status],
             ]}
     >
-      {statusLabels[lang][puppy.status]}
+      <span aria-hidden="true">♡</span>
+        {statusLabel}
     </span>
+    </div>
 
-        <h3 class="mt-4 font-heading text-2xl font-extrabold text-ink">
+    <!-- Puppy details -->
+    <div
+            class="flex flex-1 flex-col items-center
+           px-3 pb-5 pt-5 text-center"
+    >
+        <h3
+                class="font-heading text-3xl
+             font-bold text-espresso"
+        >
             {puppy.name}
         </h3>
 
-        <p class="mt-3 leading-relaxed text-muted">
+        <!-- Small ornamental divider -->
+        <div
+                class="my-4 flex items-center gap-3
+             text-wood/70"
+                aria-hidden="true"
+        >
+            <span class="h-px w-10 bg-wood/40"></span>
+            <span>✦</span>
+            <span class="h-px w-10 bg-wood/40"></span>
+        </div>
+
+        <p
+                class="max-w-sm whitespace-pre-line
+             leading-relaxed text-muted"
+        >
             {puppy.description[lang]}
         </p>
     </div>

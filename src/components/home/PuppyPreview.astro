@@ -1,16 +1,21 @@
 ---
 import puppyData from "../../data/puppies.json";
+
 import { validatePuppies } from "../../lib/validation/puppySchema";
+
 import type { SiteLanguage } from "../../i18n/home";
 
 import PuppyCard from "../ui/PuppyCard.astro";
 
 /**
- * Homepage preview of the breeder's puppy listings.
+ * Rustic puppy availability section.
  *
- * For now, records are loaded from a local JSON file.
- * In a later milestone, Pages CMS will manage that file
- * without requiring the owner to edit source code.
+ * This component is shared by:
+ * - The French and English homepages.
+ * - The dedicated French and English puppy pages.
+ *
+ * Puppy records are managed through Pages CMS and
+ * validated with Zod before being rendered.
  */
 interface Props {
     lang: SiteLanguage;
@@ -19,29 +24,41 @@ interface Props {
 const { lang } = Astro.props;
 
 /**
- * Validate the CMS-managed data during site generation.
+ * Reject malformed CMS content during static generation.
  *
- * An invalid record stops the build instead of allowing
- * incomplete or malformed content into the public site.
+ * A failed validation stops the build instead of
+ * publishing incomplete puppy information.
  */
 const puppies = validatePuppies(puppyData);
 
+/**
+ * Section labels and empty-state messages.
+ *
+ * An empty list means no listings have been published.
+ * We intentionally avoid claiming that puppies are
+ * unavailable when the owner has not entered data.
+ */
 const labels = {
     fr: {
         eyebrow: "Nos compagnons à quatre pattes",
-        heading: "Nos chiots Goldendoodles",
-        emptyTitle: "Informations à venir",
+        heading: "Nos petits trésors",
+        description:
+            "Découvrez les Goldendoodles présentés par notre élevage familial.",
+        emptyTitle: "De belles surprises à venir",
         emptyDescription:
-            "Les renseignements sur nos chiots et nos " +
-            "prochaines portées seront publiés ici.",
+            "Les informations sur nos chiots et nos " +
+            "prochaines portées seront bientôt publiées ici.",
     },
+
     en: {
         eyebrow: "Our four-legged companions",
-        heading: "Our Goldendoodle puppies",
-        emptyTitle: "Information coming soon",
+        heading: "Our little treasures",
+        description:
+            "Meet the Goldendoodles featured by our family breeding business.",
+        emptyTitle: "Lovely surprises coming soon",
         emptyDescription:
-            "Details about our puppies and upcoming " +
-            "litters will be published here.",
+            "Information about our puppies and upcoming " +
+            "litters will be published here soon.",
     },
 };
 
@@ -51,49 +68,116 @@ const t = labels[lang];
 <section
         id="chiots"
         aria-labelledby="puppies-heading"
-        class="px-6 py-20"
+        class="relative scroll-mt-24
+         overflow-hidden bg-cream
+         px-5 py-20 sm:px-6 lg:py-24"
 >
-    <div class="mx-auto max-w-7xl">
-        <div class="text-center">
-            <p class="font-bold text-teal">
+    <!-- Subtle countryside-inspired background accents -->
+    <div
+            class="pointer-events-none absolute -top-20
+           -right-20 h-64 w-64 rounded-full
+           bg-sage/20 blur-3xl"
+            aria-hidden="true"
+    ></div>
+
+    <div class="relative mx-auto max-w-7xl">
+        <!-- Section introduction -->
+        <div class="mx-auto max-w-3xl text-center">
+            <p
+                    class="font-bold tracking-wide
+               text-wood"
+            >
                 {t.eyebrow}
             </p>
 
             <h2
                     id="puppies-heading"
-                    class="mt-4 font-heading text-4xl
-               font-extrabold text-ink sm:text-5xl"
+                    class="mt-5 font-heading text-4xl
+               font-bold text-espresso
+               sm:text-5xl"
             >
                 {t.heading}
             </h2>
+
+            <!-- Handmade ornamental divider -->
+            <div
+                    class="mt-5 flex items-center
+               justify-center gap-4 text-wood/70"
+                    aria-hidden="true"
+            >
+                <span class="h-px w-16 bg-wood/40"></span>
+                <span>♡</span>
+                <span class="h-px w-16 bg-wood/40"></span>
+            </div>
+
+            <p
+                    class="mx-auto mt-6 max-w-2xl
+               text-lg leading-relaxed text-muted"
+            >
+                {t.description}
+            </p>
         </div>
 
         {
             puppies.length > 0 ? (
+                /*
+                 * Responsive listing grid:
+                 * - One column on mobile.
+                 * - Two columns on tablets.
+                 * - Three columns on larger screens.
+                 */
                     <div
-                            class="mt-12 grid gap-8 sm:grid-cols-2
-                 lg:grid-cols-3"
+                            class="mt-14 grid gap-8
+                 sm:grid-cols-2 lg:grid-cols-3"
                     >
                         {puppies.map((puppy) => (
                                 <PuppyCard puppy={puppy} lang={lang} />
                         ))}
                     </div>
             ) : (
+                /*
+                 * Friendly fallback until the owner publishes
+                 * actual puppy or litter information.
+                 */
                     <div
-                            class="mx-auto mt-12 max-w-xl rounded-3xl
-                 bg-sage p-10 text-center"
+                            class="mx-auto mt-12 max-w-2xl
+                 border border-wood/25
+                 bg-kraft p-3 shadow-rustic"
                     >
-          <span class="text-6xl" aria-hidden="true">
-            🐾
-          </span>
+                        <div
+                                class="border border-wood/20
+                   bg-linen px-6 py-12
+                   text-center sm:px-10"
+                        >
+            <span
+                    aria-hidden="true"
+                    class="text-6xl"
+            >
+              🐾
+            </span>
 
-                        <h3 class="mt-5 text-xl font-bold text-ink">
-                            {t.emptyTitle}
-                        </h3>
+                            <h3
+                                    class="mt-6 font-heading text-3xl
+                     font-bold text-espresso"
+                            >
+                                {t.emptyTitle}
+                            </h3>
 
-                        <p class="mt-4 leading-relaxed text-ink">
-                            {t.emptyDescription}
-                        </p>
+                            <div
+                                    class="my-5 flex justify-center
+                     text-rose"
+                                    aria-hidden="true"
+                            >
+                                ♡
+                            </div>
+
+                            <p
+                                    class="mx-auto max-w-md
+                     leading-relaxed text-muted"
+                            >
+                                {t.emptyDescription}
+                            </p>
+                        </div>
                     </div>
             )
         }
